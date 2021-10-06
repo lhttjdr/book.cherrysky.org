@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>λx.Help</title>
+        <meta charset="utf-8">
+        <link rel='stylesheet' type='text/css' href='help_style.css'>
+        <link rel='icon' type='image/png' href='resources/favicon.png'>
+    
+        <script>
+            function insertMain() {
+                var s = '@';s += 'ma' + 'il'+'.muni.'+'cz';
+                document.getElementById('main').innerText = 'k'+
+                'a'+'d'+'l'+'e'+'c'+'aj'+s;
+            } 
+        </script>
+    </head>
+
+    <body onload='insertMain()'>
+        <div id='navigation'>
+            <a href='index.html' target="_self"><span class='navElement'>Back to Evaluator</span></a>
+            <a href='#general_information'><span class='navElement'>General information</span></a>
+            <a href='#term_syntax'><span class='navElement'>Term syntax</span></a>
+            <a href='#reductions'><span class='navElement'>Reductions</span></a>
+            <a href='#aliases_primitives'><span class='navElement'>Aliases <em>&amp;</em> Constants</span></a>
+            <a href='#type_system'><span class='navElement'>Type system</span></a>
+            <a href='#import_export'><span class='navElement'>Import <em>&amp;</em> Export</span></a>
+            <a href='#bottom_panel'><span class='navElement'>Bottom panel</span></a>
+            <a href='#examples'><span class='navElement'>Examples</span></a>
+            <br>
+            <a href='#about'><span class='navElement'>About</span></a>
+        </div>
+        <div id='content'>
+            <h2 id='general_information'>General information</h2>
+            <p>
+            <a class='intext' href='https://en.wikipedia.org/wiki/Lambda_calculus' target='_blank'>Lambda Calculus</a> is a formal system
+            of logic, suitable for expressing computation, devised by Alonzo Church in the 1930s. This 
+            client-side JavaScript-based application is an evaluator thereof.</p>
+            <p>To evaluate some lambda calculus term, type it in the evaluator text box, and, if it is
+            <a class='intext' href='#term_syntax'>syntactically correct</a>, submit it to the evaluator.
+            When entering a&nbsp;term, be sure to have selected the right 
+            <a href='#type_system' class='intext'>type system</a> (<em>untyped</em> is the default),
+            as the parser uses this information to correctly parse the term.
+            Now you can select a&nbsp;particular <a class='intext' href='#reductions'>redex</a> and reduce it
+            by a&nbsp;mouse-click. Redexes will be highlighted on mouse-hover, and with compliance with
+            selected <a href='#reductions' class='intext'>reduction strategy</a>. You can check for
+            total number of reducible expressions down on the
+            <a href='#bottom_panel' class='intext'>bottom panel</a>.
+            After the mouse-click, new, reduced expression will appear below the original.
+            After this point, you can continue in a similar fashion until the term has no remaining redexes.
+            Alternatively, if you wish to evaluate the expression at once,
+            you can click on the arrow with asterisk <span class='butt'>→*</span> after reducible term.
+            If the evaluation is short enough, each reduction step will appear below
+            the clicked one. On the other hand, if the evaluation is long (<em>precisely, more than 50 steps</em>),
+            only the final reduced expression will be shown.
+            </p>
+
+            <h2 id='term_syntax'>Term syntax</h2>
+            <p>Parser-accepted, syntactically valid term is a&nbsp;sequence of lower- and uppercase letters, numerals, 
+            dots, equality signs, lambda characters, whitespace characters, and 
+            parentheses, adhering to one of the following grammars according to the selected
+            <a href='#type_system' class='intext'>type system:</a></p>
+            
+            This grammar holds for the untyped lambda calculus terms, and also for Hindley-Milner type system:
+            <div class='smaller'>
+            <br>
+            TERM ::= (TERM TERM) | VARIABLE | ALIAS_CONSTANT | (λVARIABLE.TERM) | <em>Let</em> VAR = TERM <em>In</em> TERM | <em>LetRec</em> VAR = TERM <em>In</em> TERM
+            <br>
+            VARIABLE ::= LOWERCASE_LETTER | LOWERCASE_LETTER NUMERAL_STRING
+            <br>
+            ALIAS_CONSTANT ::= NUMERAL_STRING | UPPERCASE_LETTER_STRING
+            </div>
+            For the simply typed lambda calculus, type annotations have to be stated in the abstraction rule, and also in the recursive Let expression:
+            <div class='smaller'>
+            <br>
+            TYPE ::= (TYPE → TYPE) | Int | Bool
+            <br>
+            TERM ::= (TERM TERM) | VARIABLE | ALIAS_CONSTANT | (λVARIABLE:TYPE.TERM) | <em>Let</em> VAR = TERM <em>In</em> TERM | <em>LetRec</em> VAR : TYPE = TERM <em>In</em> TERM
+            <br>
+            VARIABLE ::= LOWERCASE_LETTER | LOWERCASE_LETTER NUMERAL_STRING
+            <br>
+            ALIAS_CONSTANT ::= NUMERAL_STRING | UPPERCASE_LETTER_STRING
+            </div>
+
+
+            <h2 id='reductions'>Reductions</h2>
+            <p>
+            Besides desugaring the Let expressions, there are three reductions possible:
+            beta reduction, which replaces all the lambda-bound variables inside a function
+            with a argument, delta reduction, that reduces application of constants,
+            and eta reduction, removing the unneeded lambda abstractions.
+            </p>
+
+            <p>
+            Beta reductions are highlighted by blue outline for function,
+            red outline for an argument. Delta reductions are indicated
+            by a green outline, and Let expressions and eta reductions are indicated
+            by yellow outline.
+            </p>
+
+            <p>
+            There are some available reduction strategies that you can select from the head
+            navigation bar. When using a typed system, you can use only call by value strategy.
+            To select a reducible expression, click on it. The result will be appended
+            to the already existing derivation on the screen.
+            </p>
+
+            <h2 id='aliases_primitives'>Aliases <em>&amp;</em> Constants</h2>
+            <p>Altough similar in appearance, aliases and constants are somewhat different.
+            To input alias or constant, simply type its name into input box. You can change
+            default setting to interpret aliases and constant with same name as constants, instead
+            of aliases, or, if you want to use both constants and aliases from set of shared names,
+            use exclamantion mark <span class='butt'>!</span> before some term to override default setting for this given term.
+            For example, there is an alias "PLUS," that stands for pure lambda calculus church-encoded addition,
+            and constant function "PLUS," that takes two constant numbers and outputs another numerical constant as result.
+            Alias is a name for a given term, while Constant is pre-defined symbol that does not stand
+            for any other term. Constants can be functions or primitive values, such as numbers and
+            boolean values, all of which are defined outside of the lambda calculus.
+            </p>
+            <p>
+            To define your own alias, use the choose the <em>Add an alias</em> option from the Options menu,
+            write the name of the term to the left-hand side of the equality sign, and the term to the right-hand side.
+            You can also use the term on the last line right away.
+            </p>
+
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
+.tg td{font-size:16pt;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{font-size:16pt;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg .tg-l711{border-color:inherit}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-uys7{border-color:inherit;text-align:center}
+.tg .tg-us36{border-color:inherit;vertical-align:top}
+@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;margin: auto 0px;}}</style>
+<div class="tg-wrap"><table class="tg">
+  <tr>
+    <th class="tg-l711"></th>
+    <th class="tg-uys7" colspan="2">Alias</th>
+    <th class="tg-c3ow" colspan="2">Constant</th>
+  </tr>
+  <tr>
+    <td class="tg-uys7">name</td>
+    <td class="tg-uys7" colspan="2">description and term</td>
+    <td class="tg-c3ow">arity</td>
+    <td class="tg-c3ow">description</td>
+  </tr>
+  <tr>
+    <td class="tg-uys7" rowspan="2">n</td>
+    <td class="tg-l711" colspan="2">Church encoded natural numbers, input up to 3 digits only</td>
+    <td class="tg-c3ow" rowspan="2">0</td>
+    <td class="tg-us36" rowspan="2">integer primitives. JavaScript implementation-defined range</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λf.λx.f <sup>n</sup> x</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">SUCC</td>
+    <td class="tg-us36" colspan="2">successor function on Chuch numerals</td>
+    <td class="tg-c3ow" rowspan="2">1</td>
+    <td class="tg-us36" rowspan="2">successor function on constants</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λnfx.f (n f x)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">PRED</td>
+    <td class="tg-us36" colspan="2">predecessor function, the least result is zero</td>
+    <td class="tg-c3ow" rowspan="2">1</td>
+    <td class="tg-us36" rowspan="2">predecessor function,<br>negative results allowed</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λnfx.n (λgh.h (g f)) (λ u.x) (λ u.u)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">PLUS</td>
+    <td class="tg-us36" colspan="2">addition function on Church numerals</td>
+    <td class="tg-c3ow" rowspan="2">2</td>
+    <td class="tg-us36" rowspan="2">addition function on constants</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λmnfx.m f (n f x)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">MINUS</td>
+    <td class="tg-us36" colspan="2">substraction on Church numerals, the least result is zero</td>
+    <td class="tg-c3ow" rowspan="2">2</td>
+    <td class="tg-us36" rowspan="2">substraction on constants,<br>negative results allowed</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λmn.n PRED m</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">TIMES</td>
+    <td class="tg-us36" colspan="2">multiplication on Church numerals</td>
+    <td class="tg-c3ow" rowspan="2">2</td>
+    <td class="tg-us36" rowspan="2">multiplication function on constants</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λmnf.m (n f)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">ISZERO</td>
+    <td class="tg-us36" colspan="2">predicate testing if a Church numeral is zero,<br>returning Church Boolean </td>
+    <td class="tg-c3ow" rowspan="2">1</td>
+    <td class="tg-us36" rowspan="2">predicate testing is a numeral constant<br>is zero</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λn.n (λx.FALSE TRUE)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">LEQ</td>
+    <td class="tg-us36" colspan="2">predicate testing if a Church numeral is less than,<br>or equal to another</td>
+    <td class="tg-c3ow" rowspan="2">2</td>
+    <td class="tg-us36" rowspan="2">predicate testing if a numeral constant<br>is less than, or equal to another</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λmn.ISZERO (MINUS m n)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">DIV</td>
+    <td class="tg-us36" colspan="2">division on Church numerals</td>
+    <td class="tg-c3ow" rowspan="2">2</td>
+    <td class="tg-us36" rowspan="2">division function on integer constants</td>
+  </tr>
+  <tr>
+    <td class="tg-us36" colspan="2">recursive definition below</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">EQ</td>
+    <td class="tg-us36" colspan="2">predicate testing if two Church numerals are equal</td>
+    <td class="tg-c3ow" rowspan="2">2</td>
+    <td class="tg-us36" rowspan="2">equality function on numerical constants,<br>returns Boolean constant</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λmn.AND (LEQ m n) (LEQ n m)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">TRUE</td>
+    <td class="tg-us36" colspan="2">Church Boolean true</td>
+    <td class="tg-c3ow" rowspan="2">0</td>
+    <td class="tg-us36" rowspan="2">Boolean true constant</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λxy.x</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">FALSE</td>
+    <td class="tg-us36" colspan="2">Church Boolean false</td>
+    <td class="tg-c3ow" rowspan="2">0</td>
+    <td class="tg-us36" rowspan="2">Boolean false constant</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λxy.y</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">ITE</td>
+    <td class="tg-us36" colspan="2">conditional, the first argument is Church Boolean</td>
+    <td class="tg-c3ow" rowspan="2">3</td>
+    <td class="tg-us36" rowspan="2">conditional, the first argument Boolean constant,<br>type system dependent semantics</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λxyz.x y z</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">OR</td>
+    <td class="tg-us36" colspan="2">logical conjunction on Church Booleans</td>
+    <td class="tg-c3ow" rowspan="2">2</td>
+    <td class="tg-us36" rowspan="2">logical conjunction on Boolean constants</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λyx.y y x</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">AND</td>
+    <td class="tg-us36" colspan="2">logical disjunction on Church Booleans</td>
+    <td class="tg-c3ow" rowspan="2">2</td>
+    <td class="tg-us36" rowspan="2">logical disjunction on Boolean constants</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λyx.y x y</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">NOT</td>
+    <td class="tg-us36" colspan="2">logical negation on Church Booleans</td>
+    <td class="tg-c3ow" rowspan="2">1</td>
+    <td class="tg-us36" rowspan="2">logical negation on Boolean constants</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λx.x FALSE TRUE</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">FIX</td>
+    <td class="tg-c3ow" colspan="2" rowspan="2"><em>undefined</em></td>
+    <td class="tg-c3ow" rowspan="2">1</td>
+    <td class="tg-us36" rowspan="2">fixed point of the abstraction input</td>
+  </tr>
+  <tr>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">Y</td>
+    <td class="tg-us36" colspan="2">fixed point combinator</td>
+    <td class="tg-c3ow" colspan="2" rowspan="2"><em>undefined</em></td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λf.(λx.f (x x)) (λ x.f (x x))</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">THETA</td>
+    <td class="tg-us36" colspan="2">fixed point combinator, displayed as Θ</td>
+    <td class="tg-c3ow" colspan="2" rowspan="2"><em>undefined</em></td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">(λxf.f (x x f)) (λxf.f (x x f))</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">OMEGA</td>
+    <td class="tg-us36" colspan="2">Omega combinator, displayed as Ω</td>
+    <td class="tg-c3ow" colspan="2" rowspan="2"><em>undefined</em></td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">(λx.x x) (λ x.x x)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">S</td>
+    <td class="tg-us36" colspan="2">pure λ-calculus S combinator</td>
+    <td class="tg-c3ow" rowspan="2">3</td>
+    <td class="tg-us36" rowspan="2">S combinator constant</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λxyz.x z (y z)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">K</td>
+    <td class="tg-us36" colspan="2">pure λ-calculus K combinator</td>
+    <td class="tg-c3ow" rowspan="2">2</td>
+    <td class="tg-us36" rowspan="2">K combinator constant</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λij.i</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">I</td>
+    <td class="tg-us36" colspan="2">pure λ-calculus I combinator</td>
+    <td class="tg-c3ow" rowspan="2">1</td>
+    <td class="tg-us36" rowspan="2">I combinator constant</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="2">λi.i</td>
+  </tr>
+</table></div>
+
+            <h2 id='type_system'>Type system</h2>
+            <ul>
+                <li><h4>None – Untyped lambda calculus</h4><p>
+                The default "type system" is no type system at all. This enables reductions
+                of any terms, potentially resulting in inconsistencies, but it gives you
+                a freedom of self-application.
+                </p></li>
+                <li><h4>Simply typed lambda calculus</h4><p>
+                The simple simply typed lambda calculus is supplied with type annotations
+                marking the expected input to a function.
+                Because using the call by value, a type of a reducible function and its argument
+                can be determined without an outside context, and it will stop
+                evaluation of terms that do not match the expected argument and the supplied one.
+                </p></li>
+                <li><h4>Hindley-Milner type system</h4><p>
+                This type system does not need type annotations, and it can derive the types
+                of types without help. It is able to derive the most general, polymorphic type.
+                </p></li>
+            </ul>
+
+            <h2 id='import_export'>Import <em>&amp;</em> Export</h2>
+            <ul>
+                <li><h4>Export</h4><p>There are several output options: you can print the evaluation,
+                generate Latex source, or save it as a file. These export options save the whole
+                evaluation as shown on the screen, this means selected options, including Alias expansion and
+                Shorthand form, are used. In case of exporting the evaluation into a file, user-defined
+                Aliases are also saved to the file.
+                </p></li>
+                <li><h4>Import</h4><p>You can import a previously saved file: either a full derivation,
+                including the user-defined aliases, or just the aliases. The page URL
+                is pointing to the last term, so you can copy and paste it.</p></li>
+            </ul>
+
+            <h2 id='bottom_panel'>Bottom panel</h2>
+            <p>This panel is designated to present you with useful information: Whether the current term
+            (<em>the last in the evaluation</em>) contains redexes, and if so, what kind of redexes, and
+            especially, how many. If a&nbsp;<em>typed</em> system is selected, this panel will also show information
+            about type correctness. Information about currently selected type system is shown in the
+            right corner of this panel, but you cannot change it during the evaluation.
+            </p>
+            
+            <h2 id='examples'>Examples</h2>
+            <p>To evaluate particular expression, just click on it—a new window with evaluator set to a given
+            expression will be open in your browser.</p>
+            <div class='examples'>
+            <a href='index.html#SIMPLY_TYPEDLetRec%20f:(Int%20%E2%86%92%20Int)%20=%20(%CE%BBx:Int.(((ITE%20((EQ%20x)%200))%201)%20((TIMES%20x)%20(f%20(PRED%20x)))))%20In%20(f%2012)' target="_self">LetRec f:Int → Int = λx:Int.ITE (EQ x 0) 1 (TIMES x (f (PRED x))) In f 12</a>
+            <br>
+            <a href='index.html#UNTYPED(%CE%BBx.(f%20x))'>λx.f x</a>
+            <br>
+            <a href='index.html#UNTYPED((%CE%BBn.(%CE%BBf.(%CE%BBx.(((n%20(%CE%BBg.(%CE%BBh.(h%20(g%20f)))))%20(%CE%BBu.x))%20(%CE%BBu.u)))))%20(%CE%BBf.(%CE%BBx.(f%20(f%20(f%20(f%20x)))))))'>(λnfx.n (λgh.h (g f)) (λu.x) (λu.u)) (λfx.f (f (f (f x))))</a>
+            <br>
+            <a href='index.html#UNTYPED((%CE%BBx.(%CE%BBf.(f%20((x%20x)%20f))))%20(%CE%BBx.(%CE%BBf.(f%20((x%20x)%20f)))))'>Θ</a> (this can be input only as "THETA")
+            <br>
+            <a href='index.html#UNTYPED((PLUS%202)%202)'>PLUS 2 2</a>
+            <br>
+            <a href='index.html#UNTYPED((%CE%BBx1.(%CE%BBw2.x1))%20(%CE%BBw.(w%20w2)))'>(λx1w2.x1) (λw.w w2)</a>
+            <br>
+            <a href='index.html#UNTYPED((%CE%BBx.(x%20x))%20(%CE%BBx.(x%20x)))'>Ω</a> (this can be input only using "OMEGA")
+            <br>
+            <a href='index.html#UNTYPED(((((%CE%BBx1.(%CE%BBx2.(%CE%BBx3.(%CE%BBx4.((PLUS%20x2)%20x4)))))%20FALSE)%202)%20TRUE)%205)'>(λx1x2x3x4.PLUS x2 x4) FALSE 2 TRUE 5</a>
+            <br>
+            <a href='index.html#SIMPLY_TYPED((%CE%BBx:(Int%20%E2%86%92%20Bool).x)%20(%CE%BBw:Int.((EQ%20w)%2012)))'>(λx:Int → Bool.x) (λw:Int.EQ w 12)</a>
+            <br>
+            <a href='index.html#HINDLEY_MILNER((%CE%BBf.((f%202)%202))%20TIMES)'>(λf.f 2 2) TIMES</a>
+            <br>
+            <a href='index.html#HINDLEY_MILNERLet%20f%20=%20234%20In%20((PLUS%20f)%20f)'>Let f = 234 In PLUS f f</a>
+            <br>
+            <a href='index.html#HINDLEY_MILNER((%CE%BBn.(%CE%BBf.(%CE%BBx.(f%20((n%20f)%20x)))))%20((%CE%BBn.(%CE%BBf.(%CE%BBx.(f%20((n%20f)%20x)))))%20(%CE%BBf.(%CE%BBx.(f%20(f%20(f%20(f%20x))))))))'>SUCC (SUCC 4)</a>
+            </div>
+
+            <h2 id='about'>About</h2>
+            <p>Created in <em>2018</em> by <span id='main'><sub>JavaScript needed for mail rendition</sub></span> as a practical part of bachelor 
+            thesis at Masaryk University.</p>
+            <p>Computer Modern font is licensed under free and open-source
+            <a class='intext' target='_blank' href='https://opensource.org/licenses/OFL-1.1'>SIL OPEN FONT LICENSE</a>.</p>
+            <p>This work is licensed under <a href='https://creativecommons.org/publicdomain/zero/1.0/' class='intext' target='_blank'>CC0 - Public Domain</a>
+            to the extent permitted by law. The source code is available at <a class='intext' href='https://gitlab.com/kdlcj/lambda' target='_blank'>gitLab</a>.
+            </p>
+        </div>
+    </body>
+</html>

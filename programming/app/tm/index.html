@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+</head>
+<body style="height: 100vh;">
+    <div class="container">
+        <table id="myTable" class=" table order-list">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Gmail</td>
+                <td>Phone</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-sm-4">
+                    <input type="text" name="name" class="form-control" />
+                </td>
+                <td class="col-sm-4">
+                    <input type="mail" name="mail"  class="form-control"/>
+                </td>
+                <td class="col-sm-3">
+                    <input type="text" name="phone"  class="form-control"/>
+                </td>
+                <td class="col-sm-2"><a class="deleteRow"></a>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" style="text-align: left;">
+                    <input type="button" class="btn btn-lg btn-block " id="addrow" value="Add Row" />
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        </tfoot>
+    </table>
+    </div>
+    <script>
+        $(document).ready(function () {
+        var counter = 0;
+        $("#addrow").on("click", function () {
+            var newRow = $("<tr>");
+            var cols = "";
+            cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
+            cols += '<td><input type="text" class="form-control" name="mail' + counter + '"/></td>';
+            cols += '<td><input type="text" class="form-control" name="phone' + counter + '"/></td>';
+            cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+            newRow.append(cols);
+            $("table.order-list").append(newRow);
+            counter++;
+        });
+        $("table.order-list").on("click", ".ibtnDel", function (event) {
+            $(this).closest("tr").remove();       
+            counter -= 1
+        });
+    });
+    function calculateRow(row) {
+        var price = +row.find('input[name^="price"]').val();
+    }
+    function calculateGrandTotal() {
+        var grandTotal = 0;
+        $("table.order-list").find('input[name^="price"]').each(function () {
+            grandTotal += +$(this).val();
+        });
+        $("#grandtotal").text(grandTotal.toFixed(2));
+    }
+    </script>
+    <div class="row py-3 mb-5">
+    <script src="//d3js.org/d3.v5.min.js"></script>
+    <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+    <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+    <div id="graph" style="text-align: center;"></div>
+    <script>
+    var dotIndex = 0;
+    var graphviz = d3.select("#graph").graphviz()
+        .transition(function () {
+            return d3.transition("main")
+                .ease(d3.easeLinear)
+                .delay(500)
+                .duration(1500);
+        })
+        .logEvents(true)
+        .on("initEnd", render);
+    function render() {
+        var dotLines = dots[dotIndex];
+        var dot = dotLines.join('');
+        graphviz
+            .renderDot(dot)
+            .on("end", function () {
+                dotIndex = (dotIndex + 1) % dots.length;
+                render();
+            });
+    }
+    var dots = [
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    a [fillcolor="#d62728"]',
+            '    b [fillcolor="#1f77b4"]',
+            '    a -> b',
+            '}'
+        ],
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    a [fillcolor="#d62728"]',
+            '    c [fillcolor="#2ca02c"]',
+            '    b [fillcolor="#1f77b4"]',
+            '    a -> b',
+            '    a -> c',
+            '}'
+        ],
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    a [fillcolor="#d62728"]',
+            '    b [fillcolor="#1f77b4"]',
+            '    c [fillcolor="#2ca02c"]',
+            '    a -> b',
+            '    a -> c',
+            '}'
+        ],
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    a [fillcolor="#d62728", shape="box"]',
+            '    b [fillcolor="#1f77b4", shape="parallelogram"]',
+            '    c [fillcolor="#2ca02c", shape="pentagon"]',
+            '    a -> b',
+            '    a -> c',
+            '    b -> c',
+            '}'
+        ],
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    a [fillcolor="yellow", shape="star"]',
+            '    b [fillcolor="yellow", shape="star"]',
+            '    c [fillcolor="yellow", shape="star"]',
+            '    a -> b',
+            '    a -> c',
+            '    b -> c',
+            '}'
+        ],
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    a [fillcolor="#d62728", shape="triangle"]',
+            '    b [fillcolor="#1f77b4", shape="diamond"]',
+            '    c [fillcolor="#2ca02c", shape="trapezium"]',
+            '    a -> b',
+            '    a -> c',
+            '    b -> c',
+            '}'
+        ],
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    a [fillcolor="#d62728", shape="box"]',
+            '    b [fillcolor="#1f77b4", shape="parallelogram"]',
+            '    c [fillcolor="#2ca02c", shape="pentagon"]',
+            '    a -> b',
+            '    a -> c',
+            '    b -> c',
+            '}'
+        ],
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    a [fillcolor="#d62728"]',
+            '    b [fillcolor="#1f77b4"]',
+            '    c [fillcolor="#2ca02c"]',
+            '    a -> b',
+            '    a -> c',
+            '    c -> b',
+            '}'
+        ],
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    b [fillcolor="#1f77b4"]',
+            '    c [fillcolor="#2ca02c"]',
+            '    c -> b',
+            '}'
+        ],
+        [
+            'digraph  {',
+            '    node [style="filled"]',
+            '    b [fillcolor="#1f77b4"]',
+            '}'
+        ],
+    ];
+    </script>
+    </div>
+</body>
+</html>

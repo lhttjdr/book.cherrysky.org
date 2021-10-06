@@ -1,0 +1,454 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><base href=https://book.cherrysky.org/programming/><link rel=canonical href=https://book.cherrysky.org/programming/reactive-programming/java/><title>4.3 Java语言 | 编程语言笔记</title><link rel=stylesheet href=/programming/css/prism-tomorrownight.min.css><link href=https://book.cherrysky.org/programming/css/fontawesome.min.css rel=stylesheet><link rel=stylesheet href=https://book.cherrysky.org/programming/css/ace.min.css><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">MathJax.Hub.Config({tex2jax:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$']],processEscapes:true,processEnvironments:true,skipTags:['script','noscript','style','textarea','pre'],TeX:{equationNumbers:{autoNumber:"AMS"},extensions:["AMSmath.js","AMSsymbols.js"]}}});MathJax.Hub.Queue(function(){var all=MathJax.Hub.getAllJax(),i;for(i=0;i<all.length;i+=1){all[i].SourceElement().parentNode.className+=' has-jax';}});MathJax.Hub.Config({TeX:{equationNumbers:{autoNumber:"AMS"}}});</script><link rel=stylesheet type=text/css href=https://book.cherrysky.org/programming/css/mathjax-style.css><script src=/programming/js/prism-tomorrownight.min.js></script><script src=https://unpkg.com/mermaid@8.8.4/dist/mermaid.min.js defer></script><script src=/programming/js/swirly.min.js defer></script><script>function ready(fn){if(document.readyState!='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);}}
+ready(()=>Array.from(document.querySelectorAll(".swirly")).forEach((container,i,a)=>{const swirly=new Swirly();const spec=swirly.parse(container.innerText);const diagram=swirly.render(spec);swirly.drawSVG(container,diagram);}));</script></head><body><nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow sticky-top" id=navbarMain><div class=container><div><a class=navbar-brand href=/programming>编程语言笔记</a></div><button class="navbar-toggler navbar-toggler-right collapsed" type=button data-toggle=collapse data-target=#navbarMainCollapse aria-controls=navbarMainCollapse aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse" id=navbarMainCollapse><ul class="navbar-nav ml-auto"><li class=nav-item><a class=nav-link href=https://repo.cherrysky.org/Administrator/programming/releases target=_blank><button class="btn btn-success mt-n1">下载</button></a></li></ul></div></div></nav><div class=container-fluid><div class=row><div class="docs-sidenav order-0 col-12 col-md-3 col-lg-2 col-xl-2 position-sticky border-right"><nav class="navbar navbar-expand-md navbar-light pl-0"><button class="navbar-toggler navbar-toggler-right collapsed" type=button data-toggle=collapse data-target=#sidenav-left-collapse aria-controls=sidenav-left-collapse aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse align-items-start flex-column" id=sidenav-left-collapse><form class="form-inline my-2 my-lg-0 searchbox"><input class="form-control mr-sm-2 w-100" data-search-input id=search-by type=text placeholder=Search></form><ul class="navbar-nav flex-column pt-3"><li data-nav-id=/programming/introduction/ class="nav-item my-1 haschildren"><a class="nav-link p-0" href=/programming/introduction/><h6>第一章 基础概念</h6></a><ul class="list-unstyled ml-2"><li data-nav-id=/programming/introduction/turing-machine/ class="nav-item my-1 haschildren"><a class="nav-link p-0" href=/programming/introduction/turing-machine/><h6>1.1 图灵机</h6></a><ul class="list-unstyled ml-2"><li data-nav-id=/programming/introduction/turing-machine/turing_machine/ class="nav-item my-1"><a href=/programming/introduction/turing-machine/turing_machine/ class="nav-link p-0">1.1.1 图灵机</a></li></ul></li><li data-nav-id=/programming/introduction/lambda/ class="nav-item my-1 haschildren"><a class="nav-link p-0" href=/programming/introduction/lambda/><h6>1.2 $\lambda$演算</h6></a><ul class="list-unstyled ml-2"><li data-nav-id=/programming/introduction/lambda/untyped/ class="nav-item my-1"><a href=/programming/introduction/lambda/untyped/ class="nav-link p-0">1.2.1 无类型$\lambda$演算</a></li><li data-nav-id=/programming/introduction/lambda/typed/ class="nav-item my-1"><a href=/programming/introduction/lambda/typed/ class="nav-link p-0">1.2.2 带类型$\lambda$演算</a></li><li data-nav-id=/programming/introduction/lambda/calculator/ class="nav-item my-1"><a href=/programming/introduction/lambda/calculator/ class="nav-link p-0">1.2.3 $\lambda$演算计算器</a></li></ul></li><li data-nav-id=/programming/introduction/categeroy/ class="nav-item my-1"><a class="nav-link p-0" href=/programming/introduction/categeroy/><h6>1.4 范畴论</h6></a></li></ul></li><li data-nav-id=/programming/object-oriented-programming/ class="nav-item my-1 haschildren"><a class="nav-link p-0" href=/programming/object-oriented-programming/><h6>第二章 面向对象编程</h6></a><ul class="list-unstyled ml-2"><li data-nav-id=/programming/object-oriented-programming/sigma/ class="nav-item my-1"><a href=/programming/object-oriented-programming/sigma/ class="nav-link p-0">2.1 $\varsigma$演算</a></li></ul></li><li data-nav-id=/programming/functional-programming/ class="nav-item my-1"><a class="nav-link p-0" href=/programming/functional-programming/><h6>第三章 函数式编程</h6></a></li><li data-nav-id=/programming/reactive-programming/ class="nav-item my-1 parent haschildren"><a class="nav-link p-0" href=/programming/reactive-programming/><h6>第四章 响应式编程</h6></a><ul class="list-unstyled ml-2"><li data-nav-id=/programming/reactive-programming/examples/ class="nav-item my-1"><a href=/programming/reactive-programming/examples/ class="nav-link p-0">4.1 图说 响应式编程常用函数</a></li><li data-nav-id=/programming/reactive-programming/javascript/ class="nav-item my-1"><a href=/programming/reactive-programming/javascript/ class="nav-link p-0">4.2 TypeScript语言</a></li><li data-nav-id=/programming/reactive-programming/java/ class="nav-item my-1 active"><a href=/programming/reactive-programming/java/ class="nav-link p-0">4.3 Java语言</a></li></ul></li><li data-nav-id=/programming/test/ class="nav-item my-1"><a class="nav-link p-0" href=/programming/test/><h6>语法测试页</h6></a></li></ul></div></nav></div><div class="docs-toc large order-lg-2 order-md-0 order-xs-1 col-12 col-lg-2 col-xl-2 position-sticky border-left"><div><nav id=TableOfContents><ul><li><a href=https://book.cherrysky.org/programming/reactive-programming/java/#421-function-函数>4.2.1 Function 函数</a></li><li><a href=https://book.cherrysky.org/programming/reactive-programming/java/#422-completablefuture>4.2.2 CompletableFuture</a><ul><li><a href=https://book.cherrysky.org/programming/reactive-programming/java/#future><code>Future</code></a></li><li><a href=https://book.cherrysky.org/programming/reactive-programming/java/#completablefuture><code>CompletableFuture</code></a></li></ul></li><li><a href=https://book.cherrysky.org/programming/reactive-programming/java/#423-迭代器生成器>4.2.3 迭代器・生成器</a></li><li><a href=https://book.cherrysky.org/programming/reactive-programming/java/#424-流>4.2.4 流</a></li><li><a href=https://book.cherrysky.org/programming/reactive-programming/java/#425-例-spring-webflux>4.2.5 例: Spring WebFlux</a></li><li><a href=https://book.cherrysky.org/programming/reactive-programming/java/#426-例-reactive-grpc-salesforce>4.2.6 例: <code>reactive-grpc</code> (Salesforce)</a></li></ul></nav></div></div><div class="main col-12 order-1 col-md-9 col-lg-10 col-xl-8 py-3"><h1>4.3 Java语言</h1><table><thead><tr><th></th><th style=text-align:center>单值</th><th style=text-align:center>多值</th></tr></thead><tbody><tr><td>拉取(同步)</td><td style=text-align:center><code>Function</code></td><td style=text-align:center>(迭代器/生成器)</td></tr><tr><td>推送(异步)</td><td style=text-align:center><code>CompletableFuture</code></td><td style=text-align:center>(流)</td></tr></tbody></table><h2 id=421-function-函数>4.2.1 Function 函数</h2><p>这个是最常见的语法，即当调用者调用一个函数时，同步地返回一个值。</p><h2 id=422-completablefuture>4.2.2 CompletableFuture</h2><h3 id=future><code>Future</code></h3><p><code>Future</code>是Java1.5引入的功能。它配合<code>Callable</code>或<code>Runnable</code>可以方便地实现异步调用。</p><div class=mermaid align=center>sequenceDiagram
+Main->>ExecutorService: 提交Callable
+activate ExecutorService
+ExecutorService->>+Thread-1: 创建线程，执行Callable
+ExecutorService-->>Main: 返回Future
+deactivate ExecutorService
+Main->>Main: 其他任意工作
+Main->>Thread-1: Future.get()
+Thread-1-->>-Main: 返回结果</div><p>要注意，<code>Future.get()</code>是阻塞的。如果调用者在实际任务未完成前就调用<code>get</code>，那就需要一直等待（当然，超时时间是可以设置的）。<div class=tabs><ul class="nav nav-tabs"></ul><div class=tab-content><div class=tab-pane title=Main.java><pre><code class=language-java>import java.util.concurrent.*;
+
+public class Main {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        // 线程
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        Callable&lt;String&gt; callable = new Callable&lt;String&gt;() {
+            @Override
+            public String call() {
+                // Perform some computation
+                System.out.println(&quot;Entered Callable&quot;);
+                Thread.sleep(2000);
+                return &quot;Hello from Callable&quot;;
+            }
+        };
+
+        System.out.println(&quot;Submitting Callable&quot;);
+        Future&lt;String&gt; future = executorService.submit(callable);
+
+        // This line executes immediately
+        System.out.println(&quot;Do something else while callable is getting executed&quot;);
+
+        System.out.println(&quot;Retrieve the result of the future&quot;);
+        // Future.get() blocks until the result is available
+        String result = future.get();
+        System.out.println(result);
+
+        executorService.shutdown();
+    }
+}
+</code></pre></div></div></div></p><p>如果相互依赖的连续多个异步调用该如何处理？例如，异步函数<code>B</code>需要异步函数<code>A</code>的返回值。若使用上述<code>Future</code>来实现，那么，</p><ul><li><code>Main</code>线程就要等待异步函数<code>A</code>结束，<code>get</code>到其结果，然后再调用异步函数<code>B</code>；</li><li>又或者，异步函数<code>A</code>里面以回调（callback）方式嵌入异步函数<code>B</code>的逻辑。</li></ul><p>第一个方案如下：</p><div class=mermaid align=center>sequenceDiagram
+Main->>ExecutorService: 提交Callable A
+activate ExecutorService
+ExecutorService->>+Thread-1: 创建线程，执行Callable A
+ExecutorService-->>Main: 返回Future
+deactivate ExecutorService
+Main->>Main: 其他任意工作
+Main->>Thread-1: Future.get()
+Thread-1-->>-Main: 返回结果
+Main->>+ExecutorService: 提交Callable B
+ExecutorService->>+Thread-1: 创建线程，执行Callable B
+ExecutorService-->>Main: 返回Future
+deactivate ExecutorService
+Main->>Main: 其他任意工作
+Main->>Thread-1: Future.get()
+Thread-1-->>-Main: 返回结果</div><p>第二方案中，由于<code>Callable</code>的<code>call()</code>方法或者<code>Runnable</code>的<code>run()</code>方法都是不接受参数的，因此需要自定义拓展接口。当然，很多第三方库都有提供类似的功能。</p><p>下面代码演示了在一个异步调用中发起另一个异步调用的情况。</p><div class=mermaid align=center>sequenceDiagram
+Main->>ExecutorService: 提交Callable 1
+activate ExecutorService
+ExecutorService->>+Thread-1: 创建线程，执行Callable 1
+ExecutorService-->>Main: 返回Future
+deactivate ExecutorService
+Thread-1->>+ExecutorService: 提交Callable 2
+Main->>Main: 其他任意工作
+ExecutorService->>+Thread-2: 创建线程，执行Callable 2
+ExecutorService-->>-Thread-1: 返回Future
+Thread-1->>Thread-1: 其他任意工作
+Thread-1->>Thread-2: Future.get()
+Thread-2-->>-Thread-1: 返回结果
+Main->>Thread-1: Future.get()
+Thread-1-->>-Main: 返回结果</div><p><code>Callback.java</code>为拓展的<code>Callable</code>，内含一个<code>callback</code>变量可以传入一个回调函数。回调函数可以向其中插入一段逻辑。</p><div class=tabs><ul class="nav nav-tabs"></ul><div class=tab-content><div class=tab-pane title=Main.java><pre><code class=language-java>import java.util.concurrent.*;
+import java.util.Locale;
+
+public class Main {
+    
+    private static abstract class Callback&lt;T, S&gt; implements Callable&lt;S&gt; {
+        T callback;
+    
+        void setCallback (T callback) {
+            this.callback = callback;
+        }
+    
+        public abstract S call () throws Exception;
+    }
+
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        
+        Callback&lt;String, String&gt; upperCase = new Callback&lt;String, String&gt;() {
+            
+            public String call() throws Exception {
+                System.out.println(&quot;Entered Callable 2&quot;);
+                Thread.sleep(2000);
+                return callback.toUpperCase(Locale.forLanguageTag(&quot;en&quot;));
+            }
+        };
+
+        Callback&lt;Callback&lt;String, String&gt;, String&gt; callable = new Callback&lt;Callback&lt;String, String&gt;, String&gt;() {
+            
+            public String call() throws Exception {
+                // Perform some computation
+                System.out.println(&quot;Entered Callable 1&quot;);
+                Thread.sleep(2000);
+                // return &quot;Hello from Callable 1&quot;;
+                System.out.println(&quot;Submitting Callback&quot;);
+                // 一个值，也是一个特殊的回调函数，可视作常函数。
+                callback.setCallback(&quot;Hello from Callable 1&quot;);
+                Future&lt;String&gt; future = executorService.submit(callback);
+                return future.get();
+            }
+        };
+        callable.setCallback(upperCase);
+        
+        System.out.println(&quot;Submitting Callable&quot;);
+        Future&lt;String&gt; future = executorService.submit(callable);
+
+        // This line executes immediately
+        System.out.println(&quot;Do something else while callable is getting executed&quot;);
+
+        System.out.println(&quot;Retrieve the result of the future&quot;);
+        // Future.get() blocks until the result is available
+        String result = future.get();
+        System.out.println(result);
+
+        executorService.shutdown();
+    }
+}
+</code></pre></div><div class=tab-pane title=Callback.java><pre><code class=language-java>import java.util.concurrent.*;
+
+// Callback是一个相对独立的&quot;计算单元&quot;，它可以被放到一个线程中去执行，待执行结束后再查看结果即可。
+// 它包含两块逻辑:
+//    一个是call部分，为自身的逻辑
+//    另一个是callback部分，即调用者向该&quot;计算单元&quot;中注入的逻辑
+public abstract class Callback&lt;T, S&gt; implements Callable&lt;S&gt; {
+    // 回调处理，以便在call函数中利用
+    T callback;
+
+    // 添加回调函数
+    void setCallback (T callback) {
+        this.callback = callback;
+    }
+
+    public abstract S call () throws Exception;
+}
+</code></pre></div></div></div><h3 id=completablefuture><code>CompletableFuture</code></h3><p><code>CompletableFuture</code>是Java1.8引入的功能。同时，Java1.8还加入了<code>java.util.function.*</code>的函数接口，以及lambda函数的语法。</p><div class=tabs><ul class="nav nav-tabs"></ul><div class=tab-content><div class=tab-pane title=Main.java><pre><code class=language-java>import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.Locale;
+
+public class Main {
+    
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        System.out.println(&quot;Submitting Async Task&quot;);
+        CompletableFuture&lt;Either&lt;String, Exception&gt;&gt; future = CompletableFuture.supplyAsync(() -&gt; {
+            try{
+                // Perform some computation
+                System.out.println(&quot;Entered Callable 1&quot;);
+                Thread.sleep(2000);
+                return Either.&lt;String, Exception&gt;left(&quot;Hello from Callable 1&quot;);
+            } catch (Exception e) {
+                return Either.&lt;String, Exception&gt;right(e);
+            }
+        }, executorService).&lt;Either&lt;String, Exception&gt;&gt;thenApplyAsync((Either&lt;String, Exception&gt; result)-&gt;{
+            return result.&lt;String, Exception&gt;flatMap((String s) -&gt; {
+                try {
+                  System.out.println(&quot;Entered Callable 2&quot;);
+                  Thread.sleep(2000);
+                  return Either.left(s.toUpperCase(Locale.forLanguageTag(&quot;en&quot;)));
+                } catch (Exception e) {
+                    return Either.&lt;String, Exception&gt;right(e);
+                }
+            }, e -&gt; Either.&lt;String, Exception&gt;right(e));
+        }, executorService);
+
+        // This line executes immediately
+        System.out.println(&quot;Do something else while callable is getting executed&quot;);
+
+        System.out.println(&quot;Retrieve the result of the future&quot;);
+        // Future.get() blocks until the result is available
+        future.&lt;Either&lt;String, Exception&gt;&gt;get().apply((String s) -&gt; {
+            System.out.println(s);
+        }, e -&gt; {
+            // System.out.println(&quot;Exception:&quot; + e.getMessage());
+        });
+        
+        executorService.shutdown();
+    }
+}
+</code></pre></div><div class=tab-pane title=Either.java><pre><code class=language-java>import java.util.function.*;
+
+public abstract class Either&lt;L,R&gt; {
+    public static &lt;L,R&gt; Either&lt;L,R&gt; left(L value) {
+        return new Either&lt;L,R&gt;() {
+            @Override public &lt;T&gt; T map(Function&lt;? super L, ? extends T&gt; lFunc,
+                                       Function&lt;? super R, ? extends T&gt; rFunc) {
+                return lFunc.apply(value);
+            }
+            @Override public &lt;A, B&gt; Either&lt;A, B&gt; flatMap(Function&lt;L, Either&lt;A, B&gt;&gt; toLeft,
+                                                         Function&lt;R, Either&lt;A, B&gt;&gt; toRight) {
+                return toLeft.apply(value);
+            }
+        };
+    }
+    public static &lt;L,R&gt; Either&lt;L,R&gt; right(R value) {
+        return new Either&lt;L,R&gt;() {
+            @Override public &lt;T&gt; T map(Function&lt;? super L, ? extends T&gt; lFunc,
+                                       Function&lt;? super R, ? extends T&gt; rFunc) {
+                return rFunc.apply(value);
+            }
+            @Override public &lt;A, B&gt; Either&lt;A, B&gt; flatMap(Function&lt;L, Either&lt;A, B&gt;&gt; toLeft,
+                                                         Function&lt;R, Either&lt;A, B&gt;&gt; toRight) {
+                return toRight.apply(value);
+            }
+        };
+    }
+    private Either() {}
+    public abstract &lt;T&gt; T map(
+      Function&lt;? super L, ? extends T&gt; lFunc, Function&lt;? super R, ? extends T&gt; rFunc);
+
+    public &lt;T&gt; Either&lt;T,R&gt; mapLeft(Function&lt;? super L, ? extends T&gt; lFunc) {
+        return this.&lt;Either&lt;T,R&gt;&gt;map(t -&gt; left(lFunc.apply(t)), t -&gt; (Either&lt;T,R&gt;)this);
+    }
+    public &lt;T&gt; Either&lt;L,T&gt; mapRight(Function&lt;? super R, ? extends T&gt; lFunc) {
+        return this.&lt;Either&lt;L,T&gt;&gt;map(t -&gt; (Either&lt;L,T&gt;)this, t -&gt; right(lFunc.apply(t)));
+    }
+    public void apply(Consumer&lt;? super L&gt; lFunc, Consumer&lt;? super R&gt; rFunc) {
+        map(consume(lFunc), consume(rFunc));
+    }
+    private &lt;T&gt; Function&lt;T, Void&gt; consume(Consumer&lt;T&gt; c) {
+        return t -&gt; { c.accept(t); return null; };
+    }
+    public abstract &lt;A, B&gt; Either&lt;A, B&gt; flatMap(
+      Function&lt;L, Either&lt;A, B&gt;&gt; toLeft, Function&lt;R, Either&lt;A, B&gt;&gt; toRight);
+}
+</code></pre></div></div></div><h2 id=423-迭代器生成器>4.2.3 迭代器・生成器</h2><p>Java默认是不支持一个函数有多个返回值的。多个返回值不是指一次性返回超过一个值，而是指沿时间序列，不断发送返回值。</p><div class="alert alert-info" role=alert>有些编程语言如Python允许一次性返回超过一个值，其实相当于返回一个元组（tuple）一样，相当于一个值。</div><div class=tabs><ul class="nav nav-tabs"></ul><div class=tab-content><div class=tab-pane title=Main.java><pre><code class=language-java>import java.util.concurrent.*;
+import java.util.Iterator;
+
+public class Main {
+    
+    // 求所有n的倍数
+    private static Generator&lt;Integer&gt; multiplesOf(int n) {
+        // 该函数返回值有无穷个整数
+        return new Generator&lt;Integer&gt;() {
+            public void run() throws InterruptedException {
+                int i = 0;
+                while (true) {
+                    yield(n*(i++));
+                }
+            }
+        };
+    }
+    
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        // 求7的倍数
+        Iterator&lt;Integer&gt; result = multiplesOf(7).iterator();
+        // 显示前4个
+        System.out.println(result.next());
+        System.out.println(result.next());
+        System.out.println(result.next());
+        System.out.println(result.next());
+    }
+}
+</code></pre></div><div class=tab-pane title=Generator.java><pre><code class=language-java>import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public abstract class Generator&lt;T&gt; implements Iterable&lt;T&gt; {
+
+    private class Condition {
+        private boolean isSet;
+        public synchronized void set() {
+            isSet = true;
+            notify();
+        }
+        public synchronized void await() throws InterruptedException {
+            try {
+                if (isSet)
+                    return;
+                wait();
+            } finally {
+                isSet = false;
+            }
+        }
+    }
+
+    static ThreadGroup THREAD_GROUP;
+
+    Thread producer;
+    private boolean hasFinished;
+    private final Condition itemAvailableOrHasFinished = new Condition();
+    private final Condition itemRequested = new Condition();
+    private T nextItem;
+    private boolean nextItemAvailable;
+    private RuntimeException exceptionRaisedByProducer;
+
+    @Override
+    public Iterator&lt;T&gt; iterator() {
+        return new Iterator&lt;T&gt;() {
+            @Override
+            public boolean hasNext() {
+                return waitForNext();
+            }
+            @Override
+            public T next() {
+                if (!waitForNext())
+                    throw new NoSuchElementException();
+                nextItemAvailable = false;
+                return nextItem;
+            }
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+            private boolean waitForNext() {
+                if (nextItemAvailable)
+                    return true;
+                if (hasFinished)
+                    return false;
+                if (producer == null)
+                    startProducer();
+                itemRequested.set();
+                try {
+                    itemAvailableOrHasFinished.await();
+                } catch (InterruptedException e) {
+                    hasFinished = true;
+                }
+                if (exceptionRaisedByProducer != null)
+                    throw exceptionRaisedByProducer;
+                return !hasFinished;
+            }
+        };
+    }
+
+    protected abstract void run() throws InterruptedException;
+
+    protected void yield(T element) throws InterruptedException {
+        nextItem = element;
+        nextItemAvailable = true;
+        itemAvailableOrHasFinished.set();
+        itemRequested.await();
+    }
+
+    private void startProducer() {
+        assert producer == null;
+        if (THREAD_GROUP == null)
+            THREAD_GROUP = new ThreadGroup(&quot;generatorfunctions&quot;);
+        producer = new Thread(THREAD_GROUP, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    itemRequested.await();
+                    Generator.this.run();
+                } catch (InterruptedException e) {
+                    // No need to do anything here; Remaining steps in run()
+                    // will cleanly shut down the thread.
+                } catch (RuntimeException e) {
+                    exceptionRaisedByProducer = e;
+                }
+                hasFinished = true;
+                itemAvailableOrHasFinished.set();
+            }
+        });
+        producer.setDaemon(true);
+        producer.start();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        producer.interrupt();
+        producer.join();
+        super.finalize();
+    }
+}
+</code></pre></div></div></div><h2 id=424-流>4.2.4 流</h2><div class=data-table><table class="table table-hover table-bordered"><thead><tr><th style=text-align:left>第三方库</th><th style=text-align:center>多值</th><th style=text-align:center>单值</th><th style=text-align:left>备考</th></tr></thead><tbody><tr><td style=text-align:left>Reactor</td><td style=text-align:center><code>Flux</code></td><td style=text-align:center><code>Mono</code></td><td style=text-align:left>Spring WebFlux响应式框架的基础</td></tr><tr><td style=text-align:left>RxJava</td><td style=text-align:center><code>Observable</code></td><td style=text-align:center><code>Single</code></td><td style=text-align:left>ReactiveX项目的Java版</td></tr></tbody></table></div><p>函数的输入输出按照值的个数被包装了起来。它们都是异步的。以Reactor为例，</p><ul><li><code>Mono&lt;Integer></code>: 一个整数值会到来。它本身不是整数值，但它描述了整数值会到来这件事情。</li><li><code>Flux&lt;Integer></code>: 一系列整数值会到来。同样的，它是一个事件。拿到这个事件后，可以定义当每个值到来时如何处理，也可以对事件整体进行处理。</li></ul><pre><code class=language-java>    public Flux&lt;Integer&gt; example(Flux&lt;Integer&gt; input) {
+        return input
+            .map(x -&gt; x^2)
+            .buffer(2)
+            .map(x -&gt; x.size());
+    }
+</code></pre><div class=swirly><pre>
+
+[styles]
+event_radius = 30
+operator_height = 60
+
+----1----2----3----4---5-|
+
+> map(x -> x^2)
+
+----A-----B-----C--D----E-|
+A := 1
+B := 4
+C := 9
+D := 16
+E := 25
+
+> buffer(2)
+
+-----------X--------Y----Z-|
+X := [1,4]
+Y := [9,16]
+Z := [25]
+
+> map(x->x.size())
+
+-----------2---------2----1-|
+
+</pre></div><h2 id=425-例-spring-webflux>4.2.5 例: Spring WebFlux</h2><p>Spring WebFlux框架将客户端的请求（request）视作流入的起点，在服务端经过运算后，再源源不断地流向客户，响应（response）请求。这是一个符合人们印象的很自然的抽象。它与传统Spring框架的最大不同是，它的异步性。</p><p>从思想上讲，</p><ul><li>传统的Spring框架：当服务器收到用户请求数据<code>X</code>时，对<code>X</code>如何处理。</li><li>Spring WebFlux框架：当服务器收到用户请求数据<code>X</code>这件事<code>E</code>发生时，如何对该事件<code>E</code>处理。</li></ul><p>当然，由于HTTP的局限性，用户请求数据都是简单的，即框架底层会将数据同步之后，再传输。例如向客户端响应一个<code>Flux</code>并不意味着向客户端源源不断地发送多次HTTP响应，而是框架底层会收集<code>Flux</code>的数据后，统一发往客户端。同样的，客户端的请求数据也不可能是源源不断的<code>Flux</code>，WebFlux框架甚至没对它抽象。</p><p>一个节选自官网的例子。</p><p><a href=https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html#webflux-fn-handler-functions>https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html#webflux-fn-handler-functions</a></p><pre><code class=language-java>import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
+
+public class PersonHandler {
+
+    private final PersonRepository repository;
+
+    public PersonHandler(PersonRepository repository) {
+        this.repository = repository;
+    }
+
+    public Mono&lt;ServerResponse&gt; listPeople(ServerRequest request) { 
+        Flux&lt;Person&gt; people = repository.allPeople();
+        return ok().contentType(APPLICATION_JSON).body(people, Person.class);
+    }
+
+    public Mono&lt;ServerResponse&gt; createPerson(ServerRequest request) { 
+        Mono&lt;Person&gt; person = request.bodyToMono(Person.class);
+        return ok().build(repository.savePerson(person));
+    }
+
+    public Mono&lt;ServerResponse&gt; getPerson(ServerRequest request) { 
+        int personId = Integer.valueOf(request.pathVariable(&quot;id&quot;));
+        return repository.getPerson(personId)
+            .flatMap(person -&gt; ok().contentType(APPLICATION_JSON).bodyValue(person))
+            .switchIfEmpty(ServerResponse.notFound().build());
+    }
+}
+</code></pre><h2 id=426-例-reactive-grpc-salesforce>4.2.6 例: <code>reactive-grpc</code> (Salesforce)</h2><p>gRPC的通信模式完美契合Reactive框架的数据抽象。</p><p>gRPC的四种情况：</p><ul><li>一对一（unary）：一个请求，一个响应</li><li>一对多（server stream）：一个请求，多次响应</li><li>多对一（client stream）：多个请求，一次响应</li><li>多对多（bi-direction stream）：多次请求，多次响应</li></ul><p>对于单值、多值传递这件事，ReactiveX框架恰好有<code>Mono</code>和<code>Flux</code>可以描述。</p><p>节选自官网的例子：</p><p><a href=https://github.com/salesforce/reactive-grpc/tree/master/reactor>https://github.com/salesforce/reactive-grpc/tree/master/reactor</a></p><pre><code class=language-java>ReactorGreeterGrpc.GreeterImplBase svc = new ReactorGreeterGrpc.GreeterImplBase() {
+    @Override
+    public Mono&lt;HelloResponse&gt; sayHello(Mono&lt;HelloRequest&gt; request) {
+        return request.map(protoRequest -&gt; greet(&quot;Hello&quot;, protoRequest));
+    }
+
+    ...
+
+    @Override
+    public Flux&lt;HelloResponse&gt; sayHelloBothStream(Flux&lt;HelloRequest&gt; request) {
+        return request
+                .map(HelloRequest::getName)
+                .buffer(2)
+                .map(names -&gt; greet(&quot;Hello&quot;, String.join(&quot; and &quot;, names)));
+    }
+};
+</code></pre><div class=row></div></div></div></div><script src=https://book.cherrysky.org/programming/lib/jquery.min.js></script><script src=https://book.cherrysky.org/programming/lib/popper.min.js></script><script src=https://book.cherrysky.org/programming/js/bootstrap.min.js></script><script src=https://book.cherrysky.org/programming/js/tabs.js></script><script src=https://book.cherrysky.org/programming/js/table.js></script><script src=https://book.cherrysky.org/programming/js/tree.js></script><script type=text/javascript src=/programming/plugins/lunr.min.js></script><script type=text/javascript src=/programming/plugins/auto-complete.js></script><link href=/programming/plugins/auto-complete.css rel=stylesheet><script type=text/javascript>var baseurl="https:\/\/book.cherrysky.org\/programming\/";</script><script type=text/javascript src=/programming/plugins/search.js></script><script type=text/javascript src=/programming/plugins/clipboard.js></script><script>new ClipboardJS('.btn');</script></body></html>
