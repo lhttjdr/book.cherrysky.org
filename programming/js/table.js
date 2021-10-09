@@ -1,4 +1,4 @@
-/* vh2hv */
+/* vh2hv (=transpose) */
 Array.prototype.forEach.call(
     document.querySelectorAll('.vh2hv'),
     elm => {
@@ -23,9 +23,9 @@ Array.prototype.forEach.call(
             return rIndex ? s.outerHTML : s.outerHTML.replace(/<td/g, '<th').replace(/<\/td>/g, '</th>')
         }).join(''));
         tblHtml = tblHtml.map(r => `<tr>${r}</tr>`).join('');
-        tblHtml = tblHtml.replace(/<!-- (row|col)(\d+) -->/g, (r, r1, r2) => {
+        tblHtml = tblHtml.replace(/<! (row|col)(\d+) >/g, (r, r1, r2) => {
             const st = (r1 === 'row') ? 'col' : 'row';
-            return `<!-- ${st + r2} -->`;
+            return `<! ${st + r2} >`;
         });
         tbody.innerHTML = tblHtml;
     }
@@ -33,11 +33,13 @@ Array.prototype.forEach.call(
 
 const TRs = document.querySelectorAll('tr');
 for (let i = 0; i < TRs.length; i +=1) {
-    const THTDs = TRs[i].children;
+    const THTDs = TRs[i].childNodes;
     for (let j = 0; j < THTDs.length; j +=1) {
         const target = THTDs[j];
-        if (target.textContent.match(/<!-- (col|row)(\d+) -->/)) {
+        if (target.textContent.match(/<! (col|row)(\d+) >/)) {
             target[`${RegExp.$1}Span`] = parseInt(RegExp.$2, 10);
+            target.textContent= target.textContent.replace(/(?![\\])<!\s*(col|row)(\d+)\s*>/, "");
+            target.textContent= target.textContent.replace(/\\(<!\s*(col|row)(\d+)\s*>)/, "$1");
         }
         console.log(target.innerText);
         if (target.textContent.trim() == "..." || target.textContent.trim() == "…" || target.textContent.trim() == "&mldr;") {
